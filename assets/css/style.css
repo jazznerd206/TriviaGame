@@ -35,3 +35,8 @@ button:hover {
     border: 2px solid #4CAF50;
     border-radius: 25px;
 }
+
+#footer {
+    position: absolute;
+    bottom: 10%;
+}
