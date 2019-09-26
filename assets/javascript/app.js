@@ -81,11 +81,11 @@ function loadQuestion() {
     questionCurrent = triviaQuestions[triviaIndex].q;
     $(".questionField").html(questionCurrent);
     //find answers and load
-    answerIndex = [triviaQuestions[triviaIndex].answer[0].a, triviaQuestions[triviaIndex].answer[1].a, triviaQuestions[triviaIndex].answer[2].a, triviaQuestions[triviaIndex].answer[3].a];
-    check = [triviaQuestions[triviaIndex].answer[0].c, triviaQuestions[triviaIndex].answer[1].c, triviaQuestions[triviaIndex].answer[2].c, triviaQuestions[triviaIndex].answer[3].c];
+    answerIndex = [triviaQuestions[triviaIndex].answers[0].a, triviaQuestions[triviaIndex].answers[1].a, triviaQuestions[triviaIndex].answers[2].a, triviaQuestions[triviaIndex].answers[3].a];
+    check = [triviaQuestions[triviaIndex].answers[0].c, triviaQuestions[triviaIndex].answers[1].c, triviaQuestions[triviaIndex].answers[2].c, triviaQuestions[triviaIndex].answers[3].c];
     for (var i = 0; i < 4; i++) {
         var answerClick = $("<button>");
-        answerClick.addclass("answerClick");
+        answerClick.addClass("answerClick");
         answerClick.attr("answer-value", check)
         answerClick.text(answerIndex[i]);
         $(".answerField").append(answerClick);
