@@ -31,6 +31,25 @@ var triviaQuestions = [
             {a: "Iron", c: "incorrect"},
             {a: "Wedge", c: "incorrect"},
             {a: "Putter", c: "correct"}]},
+    { q: "What country has the most golf courses per capita?",
+        answers: [
+            {a: "France", c: "correct"},
+            {a: "England", c: "incorrect"},
+            {a: "United States", c: "incorrect"},
+            {a: "Moldova", c: "incorrect"}]},
+    { q: "Which famous golfer is from Seattle?",
+        answers: [
+            {a: "Ernie Els", c: "incorrect"},
+            {a: "Phil Mickleson", c: "incorrect"},
+            {a: "Fred Couples", c: "correct"},
+            {a: "Tiger Woods", c: "incorrect"}]},
+    { q: "Which is the name of a well known golf commentator?",
+        answers: [
+            {a: "Arnold Palmer", c: "incorrect"},
+            {a: "Ryan Moore", c: "incorrect"},
+            {a: "Johnny Miller", c: "correct"},
+            {a: "David Leadbetter", c: "incorrect"}]},
+
 ];
 //GAMEPLAY VARIABLES
 var ansCorrect = 0;
@@ -78,7 +97,7 @@ $(document).ready(function () {
             loadAnswerpage();
             questionPage = false;
         }
-        if (qCount === 5) {
+        if (qCount === 8) {
             loadFinalPage();
         }
     })
@@ -97,7 +116,6 @@ $("#initialize").on("click", function() {
 
 //GAME RESET FUNCTION
 function gameReset() {
-    score = 0;
     ansIncorrect = 0;
     ansCorrect = 0;
     unaswered = 0;
@@ -126,7 +144,7 @@ function loadQuestion() {
     //find answers and load
     answerIndex = [triviaQuestions[triviaIndex].answers[0].a, triviaQuestions[triviaIndex].answers[1].a, triviaQuestions[triviaIndex].answers[2].a, triviaQuestions[triviaIndex].answers[3].a];
     check = [triviaQuestions[triviaIndex].answers[0].c, triviaQuestions[triviaIndex].answers[1].c, triviaQuestions[triviaIndex].answers[2].c, triviaQuestions[triviaIndex].answers[3].c];
-    for (var i = 0; i < triviaQuestions.length; i++) {
+    for (var i = 0; i < 4; i++) {
         var answerClick = $("<button>");
         answerClick.addClass("answerClick");
         answerClick.attr("answer-value", check[i]);
@@ -141,13 +159,14 @@ function loadQuestion() {
         questionCurrent++;
         console.log("current: " + questionCurrent);
     }
-    if (qCount === 5) {
+    if (qCount === 8) {
         loadFinalPage();
     }
 };
 
 //FUNCTION FOR LOADING PAGE AFTER INIT
 function loadGamePage() {
+    $("#initialize").hide();
     $("#timertext").html("You have 15 seconds to choose an answer.");
     loadQuestion();
     timeLeft = 15;
@@ -159,7 +178,7 @@ function loadGamePage() {
 
 //FUNCTION FOR LOADING NEXT QUESTION
 function loadNextPage() {
-    if (qCount === 5) {
+    if (qCount === 8) {
         loadFinalPage();
     } else if (questionPage === false) {
         loadGamePage();
@@ -177,7 +196,7 @@ function loadAnswerpage() {
     triviaIndex++;
     //console.log(triviaIndex);
     timeLeft = 3;
-    $("#timerplace").html("You have " + timeLeft + " seconds until the next question.");
+    //$("#timerplace").html("You have " + timeLeft + " seconds until the next question.");
     $(".questionField").empty();
     $(".answerField").empty();
     if (correct === true) {
@@ -195,10 +214,12 @@ function loadAnswerpage() {
 
 //FUNCTION FOR LOADING END GAME PAGE
 function loadFinalPage() {
-    if (qCount === 5) {
+    if (qCount === 8) {
+    $("#initialize").hide();
     $(".questionField").empty();
     $(".answerField").empty();
     $("#timerplace").empty();
+    $(".timertext").empty();
     $(".resultsField").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unanswered + " unanswered questions. Great work!!");
     var doItAgain = $("<button>");
     doItAgain.addClass("startover");
