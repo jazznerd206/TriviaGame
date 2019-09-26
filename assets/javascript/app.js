@@ -35,11 +35,8 @@ var triviaQuestions = [
 //GAMEPLAY VARIABLES
 var ansCorrect = 0;
 var ansIncorrect = 0;
-var score = 0;
-var wins = 0;
-var losses = 0;
 var qCount = 0;
-var unaswered = 0;
+var unanswered = 0;
 var gameRunning = true;
 var questionPage = true;
 
@@ -62,23 +59,27 @@ $(document).ready(function () {
         var answerChoice = ($(this).attr("answer-value"));
         console.log("answer choice:" + answerChoice);
         if (answerChoice === "correct") {
+        
             qCount++;
-            console.log("qCount = " + qCount);
+            //console.log("qCount = " + qCount);
             ansCorrect++;
+            $("#correct").html(ansCorrect)
             console.log("c: " + ansCorrect);
             correct = true;
             loadAnswerpage();
             questionPage = false;
-            loadGamePage();
         } else if (answerChoice !== "correct") {
             qCount++;
-            console.log("qCount = " + qCount);
+            //console.log("qCount = " + qCount);
             ansIncorrect++;
+            $("#incorrect").html(ansIncorrect)
             console.log("i: " + ansIncorrect);
             correct = false;
             loadAnswerpage();
             questionPage = false;
-            loadGamePage();
+        }
+        if (qCount === 5) {
+            loadFinalPage();
         }
     })
 
@@ -147,7 +148,7 @@ function loadQuestion() {
 
 //FUNCTION FOR LOADING PAGE AFTER INIT
 function loadGamePage() {
-    alert("You have 15 seconds to choose an answer.");
+    $("#timertext").html("You have 15 seconds to choose an answer.");
     loadQuestion();
     timeLeft = 15;
     $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
@@ -160,8 +161,8 @@ function loadGamePage() {
 function loadNextPage() {
     if (qCount === 5) {
         loadFinalPage();
-    } else if (qCount < 4) {
-        loadQuestion();
+    } else if (questionPage === false) {
+        loadGamePage();
         questionPage = true;
     } else {
         unaswered++;
@@ -180,24 +181,25 @@ function loadAnswerpage() {
     $(".questionField").empty();
     $(".answerField").empty();
     if (correct === true) {
-        $(".answerField").append("Good job!! That is correct.");
+        $(".answerField").html("Good job!! That is correct.");
     } else if (correct === false) {
-        $(".answerField").append("Womp Womp. Swing and a miss.");
+        $(".answerField").html("Womp Womp. Swing and a miss.");
     } else {
-        $(".answerField").append("Unfortunately you did not answer that one.");
+        $(".answerField").html("Unfortunately you did not answer that one.");
     }
     //qCount++;
-    console.log(qCount, correct);
+    console.log("count" + qCount,"correct" + correct);
     clearInterval(intervalID);
     intervalID = setInterval(timerCountdown, 1000);
 }
 
 //FUNCTION FOR LOADING END GAME PAGE
 function loadFinalPage() {
+    if (qCount === 5) {
     $(".questionField").empty();
     $(".answerField").empty();
     $("#timerplace").empty();
-    $(".answerfield").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unaswered + " unanswered questions. Great work!!");
+    $(".answerfield").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unanswered + " unanswered questions. Great work!!");
     var doItAgain = $("<button>");
     doItAgain.addClass("startover");
     doItAgain.text("Wanna play another round?");
@@ -206,17 +208,18 @@ function loadFinalPage() {
         gameReset();
     })
 }
+}
 
 //TIMER
 function timerCountdown() {
     timeLeft--;
-    setInterval(1000);
     if (questionPage === true) {
         $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
     } else {
         $("#timerplace").html("Next question in " + timeLeft + (" seconds."));
     }
     if (timeLeft === 0) {
+        unanswered++;
         loadNextPage();
     }
 }

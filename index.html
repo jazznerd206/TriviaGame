@@ -21,26 +21,30 @@
         <button id="initialize">START GAME</button>
         <!--TIMEOUT FUNCTION-->
         <div class="timer" id="timeLeft">
+                <span id="timertext"></span>
                 <span id="timerplace"></span>
         </div>
         <!--q&a SECTIONS-->
         <div class="container mycontainer">
             <div class="row">
                 <div class="col-12">
-                    <span class="questionField" id="question">This is where the questions with go</span>
+                    <span class="questionField" id="question"></span>
                 </div>
                 <div class="col-12">
-                    <span class="answerField" id="answer">This is where the answer choice will go</span>
+                    <span class="answerField" id="answer"></span>
                 </div>
             </div><!--end row div-->
         </div>
         <div class="container" id="footer">
             <div class="row">
-                <div class="col-6">
-                    <span id="wins">Wins: </span>
+                <div class="col-4">
+                    <span id="wins">Correct: </span>
                 </div>
-                <div class="col-6">
-                    <span id="losses">Losses: </span>
+                <div class="col-4">
+                    <span id="losses">Incorrect: </span>
+                </div>
+                <div class="col-4">
+                    <span id="losses">Unanswered: </span>
                 </div>
             </div>
         </div><!--End of footer div-->
