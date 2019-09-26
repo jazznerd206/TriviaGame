@@ -126,7 +126,7 @@ function loadQuestion() {
     //find answers and load
     answerIndex = [triviaQuestions[triviaIndex].answers[0].a, triviaQuestions[triviaIndex].answers[1].a, triviaQuestions[triviaIndex].answers[2].a, triviaQuestions[triviaIndex].answers[3].a];
     check = [triviaQuestions[triviaIndex].answers[0].c, triviaQuestions[triviaIndex].answers[1].c, triviaQuestions[triviaIndex].answers[2].c, triviaQuestions[triviaIndex].answers[3].c];
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < triviaQuestions.length; i++) {
         var answerClick = $("<button>");
         answerClick.addClass("answerClick");
         answerClick.attr("answer-value", check[i]);
@@ -199,7 +199,7 @@ function loadFinalPage() {
     $(".questionField").empty();
     $(".answerField").empty();
     $("#timerplace").empty();
-    $(".answerfield").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unanswered + " unanswered questions. Great work!!");
+    $(".resultsField").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unanswered + " unanswered questions. Great work!!");
     var doItAgain = $("<button>");
     doItAgain.addClass("startover");
     doItAgain.text("Wanna play another round?");
@@ -219,7 +219,6 @@ function timerCountdown() {
         $("#timerplace").html("Next question in " + timeLeft + (" seconds."));
     }
     if (timeLeft === 0) {
-        unanswered++;
         loadNextPage();
     }
 }
