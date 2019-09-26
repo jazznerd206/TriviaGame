@@ -1,3 +1,4 @@
+//========================================================================================
 //QUESTION AND ANSWER VARIABLES
 var triviaQuestions = [
     { q: "In which country did golf originate?",
@@ -34,14 +35,13 @@ var triviaQuestions = [
 //GAMEPLAY VARIABLES
 var ansCorrect = 0;
 var ansIncorrect = 0;
-score = 0;
+var score = 0;
 var wins = 0;
 var losses = 0;
 var qCount = 0;
 var unaswered = 0;
-var correct = false;
-var gameRunning = false;
-var questionPage = false;
+var gameRunning = true;
+var questionPage = true;
 
 //TIMER VARIABLES
 var timeLeft = 15;
@@ -52,33 +52,41 @@ var questionIndex = "";
 var answerIndex = [];
 var currentCorrect = "";
 
-//=============================================================================================
+//========================================================================================
+
+//========================================================================================
 //FUNCTION FOR DOCUMENT READY AND RUN GAME
 $(document).ready(function () {
     $(document).on("click", ".answerClick", function() {
         var answerChoice = ($(this).attr("answer-value"));
         console.log("answer choice:" + answerChoice);
         if (answerChoice === "correct") {
+            qCount++;
             ansCorrect++;
+            console.log("c: " + ansCorrect);
             correct = true;
-            console.log(ansCorrect);
             loadAnswerpage();
             questionPage = false;
-            console.log("question page:" + questionPage);
+            loadGamePage();
+            console.log("qCount = " + qCount);
         } else if (answerChoice !== "correct") {
+            qCount++;
             ansIncorrect++;
+            console.log("i: " + ansInorrect);
             correct = false;
             loadAnswerpage();
             questionPage = false;
-            console.log("question page:" + questionPage);
+            loadGamePage();
+            console.log("qCount = " + qCount);
         }
     })
 
 });
-//=============================================================================================
+//========================================================================================
 
 
-
+//GAME RESET FUNCTIONS
+//========================================================================================
 
 //CLICK HANDLER FOR START GAME
 $("#initialize").on("click", function() {
@@ -99,6 +107,11 @@ function gameReset() {
     questionPage = true;
     loadGamePage();
 };
+//========================================================================================
+
+
+//GAMEPLAY FUNCTIONS
+//========================================================================================
 
 //CLEAR FIELDS AND LOAD QUESTIONS AND ANSWERS
 function loadQuestion() {
@@ -122,50 +135,45 @@ function loadQuestion() {
     console.log("index: " + currentAnswer);
     currentAnswer = answerIndex[currentAnswer];
     console.log("correct: " + currentAnswer);
-};
-
-//TIMER
-function timerCountdown() {
-    timeLeft--;
-
-    if (questionPage === true) {
-        $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
-    } else {
-        $("#timerplace").html("Next question in " + timeLeft (" seconds."));
+    if (currentAnswer === "correct") {
+        questionCurrent++;
+        console.log(questionCurrent);
     }
-    if (timeLeft === 0) {
-        loadNextPage();
-    }
-}
-
-//FUNCTION FOR LOADING NEXT QUESTION
-function loadNextPage() {
     if (qCount === 5) {
         loadFinalPage();
-    } else if (questionPage === false) {
-        loadGamePage();
-        questionPage = true;
-    } else {
-        unaswered++;
-        console.log(unaswered);
-        loadAnswerpage();
-        questionPage = false;
     }
-}
+};
 
 //FUNCTION FOR LOADING PAGE AFTER INIT
 function loadGamePage() {
     loadQuestion();
     timeLeft = 15;
     alert("You have 15 seconds to choose an answer.");
-    correct = "";
     $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
+    correct = "";
+    intervalID = setInterval(timerCountdown, 1000);
+    clearInterval(intervalID);
+}
+
+//FUNCTION FOR LOADING NEXT QUESTION
+function loadNextPage() {
+    if (qCount === 5) {
+        loadFinalPage();
+    } else if (qCount < 4) {
+        loadQuestion();
+        questionPage = true;
+    } else {
+        unaswered++;
+        //console.log(unaswered);
+        loadAnswerpage();
+        questionPage = false;
+    }
 }
 
 //FUNCTION TO CALL ANSWER PAGE
 function loadAnswerpage() {
     triviaIndex++;
-    console.log(triviaIndex);
+    //console.log(triviaIndex);
     timeLeft = 3;
     $("#timerplace").html("You have " + timeLeft + " seconds until the next question.");
     $(".questionField").empty();
@@ -177,7 +185,38 @@ function loadAnswerpage() {
     } else {
         $(".answerField").append("Unfortunately you did not answer that one.");
     }
-    qCount++;
+    //qCount++;
     console.log(qCount, correct);
+    intervalID = setInterval(timerCountdown, 1000);
+    clearInterval(intervalID);
 }
 
+//FUNCTION FOR LOADING END GAME PAGE
+function loadFinalPage() {
+    $(".questionField").empty();
+    $(".answerField").empty();
+    $("#timerplace").empty();
+    $(".answerfield").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unaswered + " unanswered questions. Great work!!");
+    var doItAgain = $("<button>");
+    doItAgain.addClass("startover");
+    doItAgain.text("Wanna play another round?");
+    $(".answerField").append(doItAgain);
+    $(document).on("click", ".startover", function() {
+        gameReset();
+    })
+}
+
+//TIMER
+function timerCountdown() {
+    timeLeft--;
+    setInterval(1000);
+    if (questionPage === true) {
+        $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
+    } else {
+        $("#timerplace").html("Next question in " + timeLeft (" seconds."));
+    }
+    if (timeLeft === 0) {
+        loadNextPage();
+    }
+}
+//========================================================================================
