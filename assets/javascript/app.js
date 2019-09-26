@@ -45,6 +45,7 @@ var questionPage = true;
 
 //TIMER VARIABLES
 var timeLeft = 15;
+var intervalID;
 
 //LOOPING VARIABLES
 var triviaIndex = 0;
@@ -62,22 +63,22 @@ $(document).ready(function () {
         console.log("answer choice:" + answerChoice);
         if (answerChoice === "correct") {
             qCount++;
+            console.log("qCount = " + qCount);
             ansCorrect++;
             console.log("c: " + ansCorrect);
             correct = true;
             loadAnswerpage();
             questionPage = false;
             loadGamePage();
-            console.log("qCount = " + qCount);
         } else if (answerChoice !== "correct") {
             qCount++;
+            console.log("qCount = " + qCount);
             ansIncorrect++;
             console.log("i: " + ansInorrect);
             correct = false;
             loadAnswerpage();
             questionPage = false;
             loadGamePage();
-            console.log("qCount = " + qCount);
         }
     })
 
@@ -88,7 +89,7 @@ $(document).ready(function () {
 //GAME RESET FUNCTIONS
 //========================================================================================
 
-//CLICK HANDLER FOR START GAME
+//CLICK HANDLER FOR START/RESET GAME
 $("#initialize").on("click", function() {
     gameReset();
 })
@@ -137,7 +138,7 @@ function loadQuestion() {
     console.log("correct: " + currentAnswer);
     if (currentAnswer === "correct") {
         questionCurrent++;
-        console.log(questionCurrent);
+        console.log("current: " + questionCurrent);
     }
     if (qCount === 5) {
         loadFinalPage();
@@ -146,13 +147,13 @@ function loadQuestion() {
 
 //FUNCTION FOR LOADING PAGE AFTER INIT
 function loadGamePage() {
+    alert("You have 15 seconds to choose an answer.");
     loadQuestion();
     timeLeft = 15;
-    alert("You have 15 seconds to choose an answer.");
     $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
     correct = "";
-    intervalID = setInterval(timerCountdown, 1000);
     clearInterval(intervalID);
+    intervalID = setInterval(timerCountdown, 1000);
 }
 
 //FUNCTION FOR LOADING NEXT QUESTION
@@ -187,8 +188,8 @@ function loadAnswerpage() {
     }
     //qCount++;
     console.log(qCount, correct);
-    intervalID = setInterval(timerCountdown, 1000);
     clearInterval(intervalID);
+    intervalID = setInterval(timerCountdown, 1000);
 }
 
 //FUNCTION FOR LOADING END GAME PAGE
@@ -213,7 +214,7 @@ function timerCountdown() {
     if (questionPage === true) {
         $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
     } else {
-        $("#timerplace").html("Next question in " + timeLeft (" seconds."));
+        $("#timerplace").html("Next question in " + timeLeft + (" seconds."));
     }
     if (timeLeft === 0) {
         loadNextPage();
