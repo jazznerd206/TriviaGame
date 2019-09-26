@@ -74,7 +74,7 @@ $(document).ready(function () {
             qCount++;
             console.log("qCount = " + qCount);
             ansIncorrect++;
-            console.log("i: " + ansInorrect);
+            console.log("i: " + ansIncorrect);
             correct = false;
             loadAnswerpage();
             questionPage = false;
