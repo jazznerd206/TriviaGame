@@ -2,9 +2,9 @@
 var triviaQuestions = [
     { q: "In which country did golf originate?",
         answers: [
-            {a: "England", c: "correct"},
+            {a: "England", c: "incorrect"},
             {a: "Ireland", c: "incorrect"},
-            {a: "Scotland", c: "incorrect"},
+            {a: "Scotland", c: "correct"},
             {a: "Portgugal", c: "incorrect"}]},
     { q: "Which professional golfer hold the most major titles?",
         answers: [
@@ -52,6 +52,34 @@ var questionIndex = "";
 var answerIndex = [];
 var currentCorrect = "";
 
+//=============================================================================================
+//FUNCTION FOR DOCUMENT READY AND RUN GAME
+$(document).ready(function () {
+    $(document).on("click", ".answerClick", function() {
+        var answerChoice = ($(this).attr("answer-value"));
+        console.log("answer choice:" + answerChoice);
+        if (answerChoice === "correct") {
+            ansCorrect++;
+            correct = true;
+            console.log(ansCorrect);
+            loadAnswerpage();
+            questionPage = false;
+            console.log("question page:" + questionPage);
+        } else if (answerChoice !== "correct") {
+            ansIncorrect++;
+            correct = false;
+            loadAnswerpage();
+            questionPage = false;
+            console.log("question page:" + questionPage);
+        }
+    })
+
+});
+//=============================================================================================
+
+
+
+
 //CLICK HANDLER FOR START GAME
 $("#initialize").on("click", function() {
     gameReset();
@@ -69,7 +97,7 @@ function gameReset() {
     answerIndex = [];
     gameRunning = true;
     questionPage = true;
-    loadQuestion();
+    loadGamePage();
 };
 
 //CLEAR FIELDS AND LOAD QUESTIONS AND ANSWERS
@@ -86,7 +114,70 @@ function loadQuestion() {
     for (var i = 0; i < 4; i++) {
         var answerClick = $("<button>");
         answerClick.addClass("answerClick");
-        answerClick.attr("answer-value", check)
+        answerClick.attr("answer-value", check[i]);
         answerClick.text(answerIndex[i]);
         $(".answerField").append(answerClick);
-    }};
+    }
+    currentAnswer = check.indexOf("correct");
+    console.log("index: " + currentAnswer);
+    currentAnswer = answerIndex[currentAnswer];
+    console.log("correct: " + currentAnswer);
+};
+
+//TIMER
+function timerCountdown() {
+    timeLeft--;
+
+    if (questionPage === true) {
+        $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
+    } else {
+        $("#timerplace").html("Next question in " + timeLeft (" seconds."));
+    }
+    if (timeLeft === 0) {
+        loadNextPage();
+    }
+}
+
+//FUNCTION FOR LOADING NEXT QUESTION
+function loadNextPage() {
+    if (qCount === 5) {
+        loadFinalPage();
+    } else if (questionPage === false) {
+        loadGamePage();
+        questionPage = true;
+    } else {
+        unaswered++;
+        console.log(unaswered);
+        loadAnswerpage();
+        questionPage = false;
+    }
+}
+
+//FUNCTION FOR LOADING PAGE AFTER INIT
+function loadGamePage() {
+    loadQuestion();
+    timeLeft = 15;
+    alert("You have 15 seconds to choose an answer.");
+    correct = "";
+    $("#timerplace").html("Time left: " + timeLeft + (" seconds."));
+}
+
+//FUNCTION TO CALL ANSWER PAGE
+function loadAnswerpage() {
+    triviaIndex++;
+    console.log(triviaIndex);
+    timeLeft = 3;
+    $("#timerplace").html("You have " + timeLeft + " seconds until the next question.");
+    $(".questionField").empty();
+    $(".answerField").empty();
+    if (correct === true) {
+        $(".answerField").append("Good job!! That is correct.");
+    } else if (correct === false) {
+        $(".answerField").append("Womp Womp. Swing and a miss.");
+    } else {
+        $(".answerField").append("Unfortunately you did not answer that one.");
+    }
+    qCount++;
+    console.log(qCount, correct);
+}
+
