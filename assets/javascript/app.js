@@ -125,6 +125,9 @@ function gameReset() {
     answerIndex = [];
     gameRunning = true;
     questionPage = true;
+    $(".resultsField").empty();
+    $("#timerplace").show();
+    $(".timertext").show();
     loadGamePage();
 };
 //========================================================================================
