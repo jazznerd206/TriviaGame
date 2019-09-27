@@ -78,7 +78,7 @@ $(document).ready(function () {
         var answerChoice = ($(this).attr("answer-value"));
         console.log("answer choice:" + answerChoice);
         if (answerChoice === "correct") {
-        
+
             qCount++;
             //console.log("qCount = " + qCount);
             ansCorrect++;
@@ -218,8 +218,8 @@ function loadFinalPage() {
     $("#initialize").hide();
     $(".questionField").empty();
     $(".answerField").empty();
-    $("#timerplace").empty();
-    $(".timertext").empty();
+    $("#timerplace").hide();
+    $(".timertext").hide();
     $(".resultsField").html("Your results: " + ansCorrect + " correct, " + ansIncorrect + " incorrect, and " + unanswered + " unanswered questions. Great work!!");
     var doItAgain = $("<button>");
     doItAgain.addClass("startover");
