@@ -187,7 +187,7 @@ function loadNextPage() {
         loadGamePage();
         questionPage = true;
     } else {
-        unaswered++;
+        //unaswered++;
         //console.log(unaswered);
         loadAnswerpage();
         questionPage = false;
@@ -207,6 +207,7 @@ function loadAnswerpage() {
     } else if (correct === false) {
         $(".answerField").html("Womp Womp. Swing and a miss.");
     } else {
+        unanswered++;
         $(".answerField").html("Unfortunately you did not answer that one.");
     }
     //qCount++;
